@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteCond $1 !^(index\.php|assets|robots\.txt)
+RewriteRule ^(.*)$ index.php/$1 [L]
+#AuthType Basic
+#AuthName "Restricted Area"
+#AuthUserFile /var/www/html/aleslah.infovillage.net/htdocs/.htpasswd
+#Require valid-user
