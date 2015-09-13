@@ -69,11 +69,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <body>
         <?php
         $clientId = 1;
-        $subscribeForm = '<form action="' . $this->config->item('base_url') . 'actions/subscibr" method="POST">
+        $subscribeForm = '<form action="' . $this->config->item('base_url') . 'actions/subscribe" method="POST">
                     <input type="hidden" name="clientId" value="' . $clientId . '">
                     <input type="text" name="name" placeholder="Your Name">
                     <input type="email" name="email" placeholder="Email Id">
-                    <input type="submit" name="submit" value="Subscribe">
+                    <input type="submit" name="subscribe" value="Subscribe">
                 </form>';
         ?>
 
