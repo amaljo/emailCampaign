@@ -81,7 +81,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <h1>Subscribe to monthly newsletter campaign</h1>
 
             <div id="body">
-                <p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
+                <p>Fill the form and submit.</p>
 
                 <?php echo $subscribeForm ?>
 
