@@ -8,15 +8,16 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Client List
+                    Subscriber List
                 </h1>
                 <ol class="breadcrumb">
                     <li>
                         <i class="fa fa-dashboard"></i><a href="<?= $this->config->base_url(); ?>campaignmanager"> Dashboard</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-star"> Clients</i> 
+                        <i class="fa fa-star"> Subscriptions : <?= $clientDetails->clientsDomain ?></i> 
                     </li>
+
                 </ol>
             </div>
         </div>
@@ -31,21 +32,19 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>Domain</th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>Email</th>
+                                    <th>Subscribed at</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 $cont = 1;
-                                foreach ($clients as $client):
+                                foreach ($subscribers as $subscriber):
                                     echo '<tr>
                                     <td scope="row">' . $cont++ . '</td>
-                                    <td>' . $client->clientsName . '</td>
-                                    <td>' . $client->clientsDomain . '</td>
-                                    <td><a href="' . $this->config->base_url() . 'campaignmanager/messages/' . $client->id . '">Manage Messages</a></td>
-                                        <td><a href="' . $this->config->base_url() . 'campaignmanager/subscriptions/' . $client->id . '">Subscribers</a></td>
+                                    <td>' . $subscriber->name . '</td>
+                                    <td>' . $subscriber->email . '</td>
+                                    <td>' . date('d-m-Y', strtotime($subscriber->created)) . '</td>
                                 </tr>';
                                 endforeach;
                                 ?> 
