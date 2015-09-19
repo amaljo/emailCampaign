@@ -5,8 +5,8 @@
     </head>
     <body>
         <table>
-            <tr><td><?= $clientMessage->message ?></td></tr>
-            <tr><td>&nbsp;</td></tr>
+            <tr><td><?= $message->message ?></td></tr>
+            <tr><td><a href="#">Unsubscribe</a></td></tr>
         </table>
     </body>
 </html>

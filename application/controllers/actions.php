@@ -10,6 +10,7 @@ class Actions extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('subscriptions_model', 'subscriptions');
+        $this->load->model('messages_model', 'messages');
         $this->data['pageBodyClass'] = "actions";
         $this->data['pageId'] = 'actions';
     }
@@ -44,12 +45,13 @@ class Actions extends CI_Controller {
                         $this->subscriptions->save($data);
                         $response['message'] = 'Subscribed Successfully';
                         $clientDetails = $this->subscriptions->getClientDetails($data['clientId']);
+                        $data['clientMessage'] = $this->messages->getAll($clientId, 2, TRUE);
                         $this->load->library('email');
                         $this->email->initialize(array('mailtype' => 'html'));
                         $this->email->from($clientDetails->senderEmail, $clientDetails->clientsName);
                         $this->email->to($data['email']);
                         $this->email->bcc($this->config->item('admin_email'));
-                        $this->email->subject('Thanks for Newsletter Subscription : ' . $clientDetails->clientsDomain);
+                        $this->email->subject($data['clientMessage']->subject);
                         $this->email->message($this->load->view('mailTemplates/newsletterSubscribe', array_merge($data, (array) $clientDetails), true));
                         $this->email->send();
                     } else {
@@ -66,6 +68,43 @@ class Actions extends CI_Controller {
 
     function getMenuItems() {
         return array();
+    }
+
+    /* Crone function to send emails */
+
+    function suiteUpBroadcast($clientId = 0) {
+        $clientDetails = $this->subscriptions->getClientDetails($this->security->xss_clean($clientId));
+        if (empty($clientDetails))
+            redirect('/?invalid Request');
+
+        /* Start preparations */
+
+        $messages = $this->messages->getAll($clientId, 1);
+        $currentTimeStamp = date("Y-m-d H:i:s");
+        foreach ($messages as $message) {
+            $recipients = array();
+            $relationQuery = 'INSERT INTO `broadcasthistory` (`id`, `messageId`, `subscriberId`, `createdAt`) VALUES ';
+            $sql = "SELECT id,email FROM `subscriptions` WHERE TIMESTAMPDIFF(HOUR, created, ?) <= ? and id not in (SELECT subscriberId FROM `broadcasthistory` WHERE messageId=?)";
+            $subscribers = $this->db->query($sql, array($currentTimeStamp, $message->timeInterval, $message->id))->result();
+            if (!empty($subscribers)) {
+                foreach ($subscribers as $subscriber) {
+                    $recipients[] = $subscriber->email;
+                    $relationQuery.="(NULL, {$message->id}, {$subscriber->id}, CURRENT_TIMESTAMP),";
+                }
+                $relationQuery = rtrim($relationQuery, ',') . ';';
+                $this->db->query($relationQuery);
+                $data['clientDetails'] = $clientDetails;
+                $data['message'] = $message;
+                $this->load->library('email');
+                $this->email->initialize(array('mailtype' => 'html'));
+                $this->email->from($clientDetails->senderEmail, $clientDetails->clientsName);
+                $this->email->to($recipients);
+                $this->email->bcc($this->config->item('admin_email'));
+                $this->email->subject($message->subject);
+                $this->email->message($this->load->view('mailTemplates/newsletterFollowUp', $data, true));
+                $this->email->send();
+            }
+        }
     }
 
 }

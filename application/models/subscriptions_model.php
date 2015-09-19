@@ -31,6 +31,7 @@ Class Subscriptions_model extends CI_Model {
     }
 
     function getAll($table = 'subscriptions', $clientId = 1) {
+        $this->db->where('clientId', $clientId);
         return $this->db->get($table)->result();
     }
 
@@ -55,6 +56,10 @@ Class Subscriptions_model extends CI_Model {
     function remove($id, $table = 'subscriptions') {
         $this->db->where('id', $id);
         $this->db->delete($table);
+    }
+
+    function getClientLis() {
+        return $this->db->get('clients')->result();
     }
 
 }
