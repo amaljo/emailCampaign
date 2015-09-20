@@ -6,7 +6,7 @@
     <body>
         <table>
             <tr><td><?= $message->message ?></td></tr>
-            <tr><td><a href="#">Unsubscribe</a></td></tr>
+            <tr><td><a href="<?= $this->config->base_url(); ?>actions/unsubscibe/1/<?= $subscriber->id ?>">Unsubscribe</a></td></tr>
         </table>
     </body>
 </html>

@@ -27,7 +27,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th>#</th>

@@ -2,10 +2,10 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="<?= $this->config->base_url(); ?>/assets/js/jquery.js"></script>
+<script src="<?= $this->config->base_url(); ?>assets/js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="<?= $this->config->base_url(); ?>/assets/js/bootstrap.min.js"></script>
+<script src="<?= $this->config->base_url(); ?>assets/js/bootstrap.min.js"></script>
 
 <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
 

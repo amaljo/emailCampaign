@@ -30,7 +30,7 @@
                 <div class="panel panel-default">
 
                     <div class="panel-body">
-                        <table class="table table-bordered text-left">
+                        <table class="table table-bordered text-left table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>

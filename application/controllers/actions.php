@@ -84,8 +84,8 @@ class Actions extends CI_Controller {
         foreach ($messages as $message) {
             $recipients = array();
             $relationQuery = 'INSERT INTO `broadcasthistory` (`id`, `messageId`, `subscriberId`, `createdAt`) VALUES ';
-            $sql = "SELECT id,email FROM `subscriptions` WHERE TIMESTAMPDIFF(HOUR, created, ?) <= ? and id not in (SELECT subscriberId FROM `broadcasthistory` WHERE messageId=?)";
-            $subscribers = $this->db->query($sql, array($currentTimeStamp, $message->timeInterval, $message->id))->result();
+            $sql = "SELECT id,email FROM `subscriptions` WHERE TIMESTAMPDIFF(HOUR, created, ?) >= {$message->timeInterval} and id not in (SELECT subscriberId FROM `broadcasthistory` WHERE messageId=?)";
+            $subscribers = $this->db->query($sql, array($currentTimeStamp, $message->id))->result();
             if (!empty($subscribers)) {
                 foreach ($subscribers as $subscriber) {
                     $recipients[] = $subscriber->email;
@@ -95,6 +95,7 @@ class Actions extends CI_Controller {
                 $this->db->query($relationQuery);
                 $data['clientDetails'] = $clientDetails;
                 $data['message'] = $message;
+                $data['subscriber'] = $subscriber;
                 $this->load->library('email');
                 $this->email->initialize(array('mailtype' => 'html'));
                 $this->email->from($clientDetails->senderEmail, $clientDetails->clientsName);
@@ -104,6 +105,12 @@ class Actions extends CI_Controller {
                 $this->email->message($this->load->view('mailTemplates/newsletterFollowUp', $data, true));
                 $this->email->send();
             }
+        }
+    }
+
+    function unsubscibe($step = 0, $subscriberId = 0) {
+        if ($step > 0) {
+            
         }
     }
 
