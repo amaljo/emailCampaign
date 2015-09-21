@@ -5,8 +5,10 @@
     </head>
     <body>
         <table>
-            <tr><td><?= $message->message ?></td></tr>
-            <tr><td><a href="<?= $this->config->base_url(); ?>actions/unsubscibe/?proceed=<?= $unsubscribeKey ?>">Un subscribe</a></td></tr>
+            <tr><td>Hello <?= $subscriber->name ?>,</td></tr>
+            <tr><td><p>We have received an un subscription request from <?= $clientDetails->clientsDomain ?>. Please discard this message if its not from you. </p></td></tr>
+            <tr><td>To Un subscribe from out mailing list, click the below confirmation link.<br>
+                    <a href="<?= $this->config->base_url(); ?>actions/unsubscibe/?proceed=<?= $unsubscribeKey ?>">Confirm and Proceed </a></td></tr>
         </table>
     </body>
 </html>

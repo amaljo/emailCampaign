@@ -65,17 +65,15 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Type</label>                                       
+                                <label>Type</label>
                                 <?php
                                 $options = array(1 => 'Follow Up',
                                     2 => 'Welcome Message'
                                 );
-                                echo form_dropdown('type', $options, set_value('type', $type), array('class' => 'form-control'));
+                                echo form_dropdown('type', $options, set_value('type', $type), ' class="form-control col-md-4"');
                                 ?>
                             </div>
-
-                            <input type="submit" class="btn btn-primary" name="save" value="Save">
-
+                            <div class="form-group"><input type="submit" class="btn btn-primary" name="save" value="Save"></div>
                             </form>
                         </div>
 

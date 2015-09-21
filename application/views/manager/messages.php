@@ -37,6 +37,7 @@
                                     <th>Subject</th>
                                     <th>Broadcast time Period(Hrs)</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,6 +50,7 @@
                                     <td>' . $message->subject . '</td>
                                     <td>' . $message->timeInterval . '</td>
                                     <td><a href="' . $this->config->base_url() . 'campaignmanager/saveMessage/' . $clientDetails->id . '/' . $message->id . '">Edit</a></td>
+                                        <td><a href="' . $this->config->base_url() . 'campaignmanager/remove/' . $message->id . '" onclick="return confirm(\'Are you sure?\');">Remove</a></td>
                                 </tr>';
                                 endforeach;
                                 ?> 

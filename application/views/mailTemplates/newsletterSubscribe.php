@@ -5,6 +5,7 @@
     </head>
     <body>
         <table>
+            <tr><td><strong>Hello <?= $name ?>,</strong></td></tr>
             <tr><td><?= $clientMessage->message ?></td></tr>
             <tr><td>&nbsp;</td></tr>
         </table>

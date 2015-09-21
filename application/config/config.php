@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | environments.
   |
  */
-$config['base_url'] = 'https://www.xxxx.org/';
+$config['base_url'] = 'http://XXXXXXXXXXXXXXX/';
 
 if ($_SERVER['HTTP_HOST'] == 'localhost') {
     $config['base_url'] = 'http://localhost/emailCampaign/';
@@ -213,7 +213,7 @@ $config['directory_trigger'] = 'd';
   | your log files will fill up very fast.
   |
  */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 3;
 
 /*
   |--------------------------------------------------------------------------
@@ -314,7 +314,7 @@ $config['cache_query_string'] = FALSE;
   | http://codeigniter.com/user_guide/libraries/encryption.html
   |
  */
-$config['encryption_key'] = '';
+$config['encryption_key'] = '968341b23bb5c9185a5b7321ad4d1322';
 
 /*
   |--------------------------------------------------------------------------

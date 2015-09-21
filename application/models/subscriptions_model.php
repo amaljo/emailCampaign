@@ -58,6 +58,11 @@ Class Subscriptions_model extends CI_Model {
         $this->db->delete($table);
     }
 
+    function clearHistory($subscriberId = 0) {
+        $this->db->where('subscriberId', $subscriberId);
+        $this->db->delete('broadcasthistory');
+    }
+
     function getClientLis() {
         return $this->db->get('clients')->result();
     }

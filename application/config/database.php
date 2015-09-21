@@ -74,9 +74,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$userName = 'root';
+$userName = '';
 $password = '';
-$dataBase = 'emailcampaign_ci';
+$dataBase = '';
 
 if ($_SERVER['HTTP_HOST'] == 'localhost') {
     $userName = 'root';

@@ -62,7 +62,7 @@ class Campaignmanager extends CI_Controller {
     }
 
     function logout() {
-        $this->session->unset_userdata(array('name', 'logged_in'));
+        $this->session->unset_userdata(array('name' => '', 'logged_in' => ''));
         redirect('campaignmanager/login', 'refresh');
     }
 
@@ -153,6 +153,13 @@ class Campaignmanager extends CI_Controller {
         $this->load->view('manager/header');
         $this->load->view('manager/messages_save', $data);
         $this->load->view('manager/footer');
+    }
+
+    function remove($id = 0) {
+        $this->load->model('messages_model', 'messages');
+        $this->load->library('user_agent');
+        $this->messages->remove($id);
+        redirect($this->agent->referrer());
     }
 
 }
