@@ -15,6 +15,6 @@ Setup
 5. Login to admin to manage broadcasting messages.
     Url : http://localhost/emailCampaign/campaignmanager/
 6. Create crones for broadcasts.
-    Url : http://demos.infovillage.net/emailCampaign/actions/suiteUpBroadcast/{clientID}
+    Url : http://localhost/emailCampaign/actions/suiteUpBroadcast/{clientID}
 7. Enjoy
 
