@@ -15,7 +15,7 @@
                         <i class="fa fa-dashboard"></i><a href="<?= $this->config->base_url(); ?>campaignmanager"> Dashboard</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-star"> Clients</i> 
+                        <i class="fa fa-signal"> Clients</i> 
                     </li>
                 </ol>
             </div>
@@ -29,7 +29,7 @@
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Client ID</th>
                                     <th>Name</th>
                                     <th>Domain</th>
                                     <th></th>
@@ -41,7 +41,7 @@
                                 $cont = 1;
                                 foreach ($clients as $client):
                                     echo '<tr>
-                                    <td scope="row">' . $cont++ . '</td>
+                                    <td scope="row">' . $client->id . '</td>
                                     <td>' . $client->clientsName . '</td>
                                     <td>' . $client->clientsDomain . '</td>
                                     <td><a href="' . $this->config->base_url() . 'campaignmanager/messages/' . $client->id . '">Manage Messages</a></td>
@@ -55,6 +55,9 @@
                 </div>
             </div>
         </div>
+
+
+        
 
 
     </div>

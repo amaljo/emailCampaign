@@ -68,9 +68,42 @@ class Campaignmanager extends CI_Controller {
 
     function subscriptions($clientId = 0) {
         $this->checkLogin();
-        $data = array();
+        $data = array('errorLogin' => '');
         $this->load->model('subscriptions_model', 'subscriptions');
+        if ($this->input->post('apply')) {
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('action', 'Action', 'trim|required');
+
+            if ($this->form_validation->run() == TRUE) {
+
+                $clientId = $this->security->xss_clean($this->input->post('clientId'));
+                $action = $this->security->xss_clean($this->input->post('action'));
+                $subscriberIDs = $this->security->xss_clean($this->input->post('subscriberIDs'));
+                switch ($action) {
+                    case "hold":
+                        $toSave['status'] = 0;
+                        $this->subscriptions->saveMulti($toSave, $subscriberIDs);
+                        break;
+                    case "active":
+                        $toSave['status'] = 1;
+                        $this->subscriptions->saveMulti($toSave, $subscriberIDs);
+                        break;
+                    case "remove":
+                        $this->subscriptions->removeMulti($subscriberIDs);
+                        $this->subscriptions->clearHistoryMulti($subscriberIDs);
+                        break;
+                }
+
+                redirect('campaignmanager/subscriptions/' . $clientId);
+            } else {
+
+                $data['errorLogin'] = 'Subscribers and Action are required';
+            }
+        }
+
+
         $data['subscribers'] = $this->subscriptions->getAll('subscriptions', $clientId);
+        $data['clientId'] = $clientId;
         $data['clientDetails'] = $this->subscriptions->getData($clientId, 'clients');
         $this->load->view('manager/header');
         $this->load->view('manager/subscriptions', $data);
@@ -88,15 +121,20 @@ class Campaignmanager extends CI_Controller {
         $this->load->view('manager/footer');
     }
 
-    function messages($clientId = 1) {
+    function messages($clientId = 1, $msg = '') {
         $this->checkLogin();
         $data = array();
         $this->load->model('subscriptions_model', 'subscriptions');
         $this->load->model('messages_model', 'messages');
 
         $data['messages'] = $this->messages->getAll($clientId, 0);
+        $data['options'] = array(1 => 'Follow Up',
+            2 => 'Welcome Message',
+            3 => 'Broadcast'
+        );
+        $data['clientId'] = $clientId;
         $data['clientDetails'] = $this->subscriptions->getData($clientId, 'clients');
-
+        $data['warning'] = urldecode($msg);
         $this->load->view('manager/header');
         $this->load->view('manager/messages', $data);
         $this->load->view('manager/footer');
@@ -140,7 +178,6 @@ class Campaignmanager extends CI_Controller {
             if (empty($record))
                 redirect('campaignmanager/?invalid request');
 
-
             $data['subject'] = $record->subject;
             $data['clientId'] = $record->clientId;
             $data['message'] = $record->message;
@@ -148,6 +185,10 @@ class Campaignmanager extends CI_Controller {
             $data['type'] = $record->type;
             $data['id'] = $record->id;
         }
+        $data['options'] = array(1 => 'Follow Up',
+            2 => 'Welcome Message',
+            3 => 'Broadcast'
+        );
         $data['clientDetails'] = $this->subscriptions->getData($clientId, 'clients');
 
         $this->load->view('manager/header');

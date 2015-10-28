@@ -15,6 +15,9 @@
                         <i class="fa fa-dashboard"></i><a href="<?= $this->config->base_url(); ?>campaignmanager"> Dashboard</a>
                     </li>
                     <li>
+                        <i class="fa fa-signal"></i><a href="<?= $this->config->base_url(); ?>campaignmanager/clients"> Clients</a>
+                    </li>
+                    <li>
                         <i class="fa fa-th"></i><a href="<?= $this->config->base_url(); ?>campaignmanager/messages/<?= $clientDetails->id ?>"> <?= $clientDetails->clientsDomain ?></a>
                     </li>
                     <li class="active">
@@ -58,20 +61,18 @@
 
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" style="overflow: hidden">
                                 <label>Broadcast time Period (Hrs)</label><br>
                                 <input class="form-control col-md-2" size="10" type="text" required="required" name="timeInterval" placeholder="Hours" style="width: 100px;" value="<?= $timeInterval ?>">
-                                <br>
+                                 <br>
                             </div>
 
-                            <div class="form-group">
-                                <label>Type</label>
+                            <div class="form-group" style="overflow: hidden">
+                                <label>Type</label><br>
                                 <?php
-                                $options = array(1 => 'Follow Up',
-                                    2 => 'Welcome Message'
-                                );
-                                echo form_dropdown('type', $options, set_value('type', $type), ' class="form-control col-md-4"');
-                                ?>
+                                 
+                                echo form_dropdown('type', $options, set_value('type', $type), ' class="form-control col-md-4" style="width: 200px;"');
+                                ?><br>
                             </div>
                             <div class="form-group"><input type="submit" class="btn btn-primary" name="save" value="Save"></div>
                             </form>

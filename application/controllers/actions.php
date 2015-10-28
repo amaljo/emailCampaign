@@ -39,13 +39,14 @@ class Actions extends CI_Controller {
                 if (!empty($clientDetails)) {
                     $data['email'] = $this->security->xss_clean($this->input->post('email'));
                     $data['name'] = $this->security->xss_clean($this->input->post('name'));
+                    $data['created'] = date("Y-m-d H:i:s");
                     $subcription = $this->subscriptions->searchmail($data['email'], $data['clientId']);
                     $response['status'] = 1;
                     if (empty($subcription)) {
                         $this->subscriptions->save($data);
                         $response['message'] = 'Subscribed Successfully';
                         $clientDetails = $this->subscriptions->getClientDetails($data['clientId']);
-                        $data['clientMessage'] = $this->messages->getAll($data['clientId'], 2, TRUE);
+                        $data['clientMessage'] = $this->messages->getAll($data['clientId'], 2, 0, TRUE);
                         $this->load->library('email');
                         $this->email->initialize(array('mailtype' => 'html'));
                         $this->email->from($clientDetails->senderEmail, $clientDetails->clientsName);
@@ -72,7 +73,7 @@ class Actions extends CI_Controller {
 
     /* Crone function to send emails */
 
-    function suiteUpBroadcast($clientId = 0) {
+    function suiteUpBroadcast($clientId = 0, $type = 1, $messageId = 0, $from = 'local') {
         $clientDetails = $this->subscriptions->getClientDetails($this->security->xss_clean($clientId));
         if (empty($clientDetails))
             redirect('/?invalid Request');
@@ -81,14 +82,20 @@ class Actions extends CI_Controller {
 
         $this->load->library('encrypt');
 
-        $messages = $this->messages->getAll($clientId, 1);
+        /* Get All Messsges */
+        $totalRecipients = 0;
+        $recordFetch = $messageId != 0 ? TRUE : FALSE;
+        $messages = $this->messages->getAll($clientId, $type, $messageId);
+
         $currentTimeStamp = date("Y-m-d H:i:s");
         foreach ($messages as $message) {
             $recipients = array();
             $relationQuery = 'INSERT INTO `broadcasthistory` (`id`, `messageId`, `subscriberId`, `createdAt`) VALUES ';
-            $sql = "SELECT id,email FROM `subscriptions` WHERE TIMESTAMPDIFF(HOUR, created, ?) >= {$message->timeInterval} and id not in (SELECT subscriberId FROM `broadcasthistory` WHERE messageId=?)";
+            $sql = "SELECT id,email FROM `subscriptions` WHERE status=1 and TIMESTAMPDIFF(HOUR, created, ?) >= {$message->timeInterval} and id not in (SELECT subscriberId FROM `broadcasthistory` WHERE messageId=?)";
             $subscribers = $this->db->query($sql, array($currentTimeStamp, $message->id))->result();
+
             if (!empty($subscribers)) {
+                $totalRecipients+=count($subscribers);
                 foreach ($subscribers as $subscriber) {
                     $data['clientDetails'] = $clientDetails;
                     $data['message'] = $message;
@@ -109,8 +116,11 @@ class Actions extends CI_Controller {
                 $this->db->query($relationQuery);
             }
         }
-
-        echo count($messages) . ' messages sent';
+        $msg = count($messages) . ' messages sent. Recipients : ' . $totalRecipients;
+        if ($from == 'admin')
+            redirect('/campaignmanager/messages/' . $clientId . '/' . $msg);
+        else
+            echo $msg;
     }
 
     function unsubscibe() {

@@ -24,6 +24,13 @@ Class Subscriptions_model extends CI_Model {
         }
     }
 
+    function saveMulti($data, $ids = array()) {
+        if (!empty($ids)) {
+            $this->db->where_in('id', $ids);
+            $this->db->update('subscriptions', $data);
+        }
+    }
+
     function getList($start = 0, $total = 200, $clientId = 1, $table = 'subscriptions') {
         $this->db->where('clientId', $clientId);
         $this->db->limit($total, $start);
@@ -61,6 +68,20 @@ Class Subscriptions_model extends CI_Model {
     function clearHistory($subscriberId = 0) {
         $this->db->where('subscriberId', $subscriberId);
         $this->db->delete('broadcasthistory');
+    }
+
+    function removeMulti($subscriberIDs = array()) {
+        if (!empty($subscriberIDs)) {
+            $this->db->where_in('id', $subscriberIDs);
+            $this->db->delete('subscriptions');
+        }
+    }
+
+    function clearHistoryMulti($subscriberIDs = array()) {
+        if (!empty($subscriberIDs)) {
+            $this->db->where_in('subscriberId', $subscriberIDs);
+            $this->db->delete('broadcasthistory');
+        }
     }
 
     function getClientLis() {

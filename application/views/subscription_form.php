@@ -71,7 +71,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $clientId = 1;
         $subscribeForm = '<form action="' . $this->config->item('base_url') . 'actions/subscribe" method="POST">
                     <input type="hidden" name="clientId" value="' . $clientId . '">
-                    <input type="text" name="name" placeholder="Your Name">
+                    <input type="text" name="name" placeholder="Your Name" >
                     <input type="email" name="email" placeholder="Email Id">
                     <input type="submit" name="subscribe" value="Subscribe">
                 </form>';
@@ -87,7 +87,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             </div>
 
-            <p class="footer">To use this form in your page, place the following code with proper Client ID</p>
+            <p class="footer">To use this form in your pages, place the following code with proper Client ID</p>
             <code>
                 <?php echo htmlspecialchars($subscribeForm) ?>
             </code>

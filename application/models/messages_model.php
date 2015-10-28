@@ -6,11 +6,13 @@ Class Messages_model extends CI_Model {
         parent::__construct();
     }
 
-    function getAll($clientId = 0, $type = 0, $single = FALSE) {
+    function getAll($clientId = 0, $type = 0, $messageId = 0, $single = FALSE) {
         $this->db->where('clientId', $clientId);
         $this->db->order_by('timeInterval');
         if ($type != 0)
             $this->db->where('type', $type);
+        if ($messageId != 0)
+            $this->db->where('id', $messageId);
         if ($single)
             return $this->db->get('messages')->row();
         else
